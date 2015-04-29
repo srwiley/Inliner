@@ -20,10 +20,11 @@ Inlining a  function:
 
 Inliner can inline both local and global functions. Inlineable functions must not return a value or define a receiver. Local functions must be declared by assignment to a variable with the ":=" token. The variable name must match the filter regular expression, which defaults to “_$”. Variables should not be declared inside the inlineable function if it is to be used more than once in a code block. Multiple function arguments are allowed. Type compatibility is not checked, but will be caught during the Go build phase. Notice that once inlined, the original function and its calls are commented out, but remain in the code.
 
-Example: 
+Example:
 
-Source: 
-"func Foo() {
+Source:
+
+func Foo() {
 	sum := 0.0
 	bar_ := func(x float64) {
 		sum *= x
@@ -36,6 +37,7 @@ Source:
 }
 
 Inlined:
+
 func Foo() {
 	sum := 0.0
 	 /* bar_ := func(x float64) {
