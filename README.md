@@ -110,7 +110,7 @@ func Foo() {
 
 More complex examples, tests, and benchmarks can be found in the testfiles folder. Assuming you have Go version 1.4 or later installed, you can run the examples as follows: Download the repository. Build inliner.go. Move to the testfiles directory and type:
 
-go generate; go test -test.benchmark=”.”
+go generate; go test -test.bench=”.”
 
 ####Generate directives: 
 
