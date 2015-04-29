@@ -122,7 +122,7 @@ A compiled version of inliner must be available either in the system PATH variab
 //go:generate inline -out asserts_inlined.go -in asserts.go
 //go:generate gofmt -w=true asserts_inlined.go
 ```
-####Run tests:
+
 Source files intended for inlining should be prevented from being compiled by Go build by placing this directive before the package declaration:
 ```
 // +build generate
