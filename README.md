@@ -22,7 +22,7 @@ Inliner can inline both local and global functions. Inlineable functions must no
 
 Example: 
 
-Source: 
+{Source: 
 func Foo() {
 	sum := 0.0
 	bar_ := func(x float64) {
@@ -47,7 +47,7 @@ func Foo() {
 	sum *= (3.0) // inlined bar_(3.0)
 	fmt.Println("sum:", sum)
 }
-
+}
 Unwinding a static loop:
 
 For a loop to be unwound,  it must declare an integer variable at the start of the for statement using the “:=” token with a static integer literal on the right side. The variable name must match the filter regular expression. The condition statement must be a simple "<" or "<=" token with the integer variable on the left side and a static integer literal on the right. The for statement must increment the integer variable with a "++" token.
