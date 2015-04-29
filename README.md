@@ -122,11 +122,13 @@ A compiled version of inliner must be available either in the system PATH variab
 //go:generate inline -out asserts_inlined.go -in asserts.go
 //go:generate gofmt -w=true asserts_inlined.go
 ```
+#Run tests:
 Source files intended for inlining should be prevented from being compiled by Go build by placing this directive before the package declaration:
 ```
 // +build generate
 ```
-#About inliner :
+
+#About inliner:
 
 Inliner uses the go language “ast” (abstract syntax tree) package to parse source code. It will perform multiple passes over the source code until all inlineable declarations are resolved, including nested inlineable func declarations, code blocks within an inlineable function's scope, and nested static integer loops. It does not check type compatibility between inlineable function arguments and their call statements. Any such errors will be caught during the Go build phase.
 
