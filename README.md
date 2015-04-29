@@ -16,7 +16,7 @@ Benchmark4_2xLoopNotUnwound	20000000	        79.7 ns/op
 Benchmark4_2xLoopUnwound	200000000	         9.57 ns/op
 ```
 
-#Inlining a function:
+####Inlining a function:
 
 Inliner can inline both local and global functions. Inlineable functions must not return a value or define a receiver. Local functions must be declared by assignment to a variable with the ":=" token. The variable name must match the filter regular expression, which defaults to “_$”. Variables should not be declared inside the inlineable function if it is to be used more than once in a code block. Multiple function arguments are allowed. Type compatibility is not checked, but will be caught during the Go build phase. Notice that once inlined, the original function and its calls are commented out, but remain in the code.
 
@@ -50,7 +50,7 @@ func Foo() {
 	fmt.Println("sum:", sum)
 }
 ```
-#Unwinding a static loop:
+####Unwinding a static loop:
 
 For a loop to be unwound, it must declare an integer variable at the start of the for statement using the “:=” token with a static integer literal on the right side. The variable name must match the filter regular expression. The condition statement must be a simple "<" or "<=" token with the integer variable on the left side and a static integer literal on the right. The for statement must increment the integer variable with a "++" token.
 
@@ -73,7 +73,7 @@ func Foo() {
 		fmt.Println("i:", (2)) /* } */ 
 }
 ```
-#Asserts:
+####Asserts:
 
 The assertion feature works by defining two new keywords, affirm_ and deny_. These words take one or two arguments. The second argument, if present, must be a string, which defines the failure action. If the second argument is not present, the default failure action is “return”. Unlike the function inlining and loop unwinding feature, which will run and produce the same results whether inlined or not, asserts will not compile unless inliner processes the source file.
 
@@ -130,7 +130,7 @@ Source files intended for inlining should be prevented from being compiled by Go
 
 #About inliner:
 
-Inliner uses the go language “ast” (abstract syntax tree) package to parse source code. It will perform multiple passes over the source code until all inlineable declarations are resolved, including nested inlineable func declarations, code blocks within an inlineable function's scope, and nested static integer loops. It does not check type compatibility between inlineable function arguments and their call statements. Any such errors will be caught during the Go build phase.
+Inliner uses the Go language “ast” (abstract syntax tree) package to parse source code. It will perform multiple passes over the source code until all inlineable declarations are resolved, including nested inlineable func declarations, code blocks within an inlineable function's scope, and nested static integer loops. It does not check type compatibility between inlineable function arguments and their call statements. Any such errors will be caught during the Go build phase.
 
-Inliner defines a “BlockOperator” type to provide a simple plugin-like architecture. Three BlockOperator types are included in this version of inliner: “functInline”, “unwindStaticLoop”, and “assertInline”. (See inliner.go.) To disable any feature, it can be removed from the BlockOperator slice passed to the “BlockVisitor”  (inliner.go , line 405) . Additional features may be added by defining new BlockVisitor types, and adding it to the BlockOperator slice on line 
+Inliner defines a “BlockOperator” type to provide a simple plugin-like architecture. Three BlockOperator types are included in this version of inliner: “functInline”, “unwindStaticLoop”, and “assertInline”. (See inliner.go.) To disable any feature, it can be removed from the BlockOperator slice passed to the “BlockVisitor”  (inliner.go , line 405) . Additional features may be added by defining a new BlockOperator type, and adding it to the BlockOperator slice before passing it to the main BLockVisitor.
 
