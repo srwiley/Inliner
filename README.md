@@ -16,13 +16,13 @@ Benchmark4_2xLoopNotUnwound	20000000	        79.7 ns/op
 Benchmark4_2xLoopUnwound	200000000	         9.57 ns/op
 
 
-Inlining a  function:
+#Inlining a function:
 
 Inliner can inline both local and global functions. Inlineable functions must not return a value or define a receiver. Local functions must be declared by assignment to a variable with the ":=" token. The variable name must match the filter regular expression, which defaults to “_$”. Variables should not be declared inside the inlineable function if it is to be used more than once in a code block. Multiple function arguments are allowed. Type compatibility is not checked, but will be caught during the Go build phase. Notice that once inlined, the original function and its calls are commented out, but remain in the code.
 
-Example:
+**Example:**
 
-Source:
+*Source:*
 ```
 func Foo() {
 	sum := 0.0
@@ -36,7 +36,7 @@ func Foo() {
 	fmt.Println("sum:", sum)
 }
 ```
-Inlined:
+*Inlined:*
 ```
 func Foo() {
 	sum := 0.0
@@ -48,15 +48,15 @@ func Foo() {
 	sum *= (2.0) // inlined bar_(2.0)
 	sum *= (3.0) // inlined bar_(3.0)
 	fmt.Println("sum:", sum)
-}"
+}
 ```
-Unwinding a static loop:
+#Unwinding a static loop:
 
 For a loop to be unwound, it must declare an integer variable at the start of the for statement using the “:=” token with a static integer literal on the right side. The variable name must match the filter regular expression. The condition statement must be a simple "<" or "<=" token with the integer variable on the left side and a static integer literal on the right. The for statement must increment the integer variable with a "++" token.
 
-Example:
+**Example:**
 
-Source:
+*Source:*
 ```
 func Foo() {
 	for i_ := 0; i_ < 3; i_++ {
@@ -64,7 +64,7 @@ func Foo() {
 	}
 }
 ```
-Inlined:
+*Inlined:*
 ```
 func Foo() {
 	 /* for i_ := 0; i_ < 3; i_++ { /* unwound */ 
@@ -73,18 +73,17 @@ func Foo() {
 		fmt.Println("i:", (2)) /* } */ 
 }
 ```
- Asserts:
+#Asserts:
 
-The assertion feature works by defining two new keywords, "affirm_" and "deny_". These words take one or two arguments. The second argument, if present, must be a string, which defines the failure action. If the second argument is not present, the default failure action is “return”. Unlike the function inlining and loop unwinding feature, which will run and produce the same results whether inlined or not, asserts will not compile unless inliner processes the source file.
+The assertion feature works by defining two new keywords, affirm_ and deny_. These words take one or two arguments. The second argument, if present, must be a string, which defines the failure action. If the second argument is not present, the default failure action is “return”. Unlike the function inlining and loop unwinding feature, which will run and produce the same results whether inlined or not, asserts will not compile unless inliner processes the source file.
 
 If first the argument is a boolean and is false ,"affirm_" will execute the failure action, if true, "deny_" will execute the failure action.
 
 If the first argument is not a boolean and is nil, ,"affirm_" will execute the failure action, if not nil, "deny_" will execute the failure action. 
 
+**Example:**
 
-Example:
-
-Source:
+*Source:*
 ```
 func Foo() {
 	number := "3141"
@@ -93,7 +92,7 @@ func Foo() {
 	affirm_(n == 3141)
 }
 ```
-Inlined:
+*Inlined:*
 ```
 func Foo() {
 	number := "3141"
@@ -113,7 +112,7 @@ More complex examples, tests, and benchmarks can be found in the testfiles folde
 
 go generate; go test -test.benchmark=”.”
 
-Generate directives: 
+#Generate directives: 
 
 Inliner is intended to work with the Go tool's generate feature introduced in Go version 1.4. In the generate directive, you must provide an input file, an output file, and, optionally, a regular expression to filter function names and loop counter variables. The default filter matches names ending with an underscore. 
 
@@ -127,7 +126,7 @@ Source files intended for inlining should be prevented from being compiled by Go
 ```
 // +build generate
 ```
-About inliner :
+#About inliner :
 
 Inliner uses the go language “ast” (abstract syntax tree) package to parse source code. It will perform multiple passes over the source code until all inlineable declarations are resolved, including nested inlineable func declarations, code blocks within an inlineable function's scope, and nested static integer loops. It does not check type compatibility between inlineable function arguments and their call statements. Any such errors will be caught during the Go build phase.
 
