@@ -18,7 +18,7 @@ Benchmark4_2xLoopUnwound	200000000	         9.57 ns/op
 
 ####Inlining a function:
 
-Inliner can inline both local and global functions. Inlineable functions must not return a value or define a receiver. Local functions must be declared by assignment to a variable with the ":=" token. The variable name must match the filter regular expression, which defaults to “_$”. Variables should not be declared inside the inlineable function if it is to be used more than once in a code block. Multiple function arguments are allowed. Type compatibility is not checked, but will be caught during the Go build phase. Notice that once inlined, the original function and its calls are commented out, but remain in the code.
+Inliner can inline both local and global functions. Inlineable functions must not return a value or define a receiver. Local functions must be declared by assignment to a variable with the ":=" token. The variable name must match the filter regular expression, which defaults to “_$”. Variables should not be declared inside the inlineable function if it is to be used more than once in a code block. Multiple function arguments are allowed, but type compatibility is not checked. Mismatches will be caught during the Go build phase. Notice that once inlined, the original function and its calls are commented out, but remain in the code.
 
 **Example:**
 
@@ -112,7 +112,7 @@ More complex examples, tests, and benchmarks can be found in the testfiles folde
 
 go generate; go test -test.benchmark=”.”
 
-#Generate directives: 
+####Generate directives: 
 
 Inliner is intended to work with the Go tool's generate feature introduced in Go version 1.4. In the generate directive, you must provide an input file, an output file, and, optionally, a regular expression to filter function names and loop counter variables. The default filter matches names ending with an underscore. 
 
@@ -122,13 +122,13 @@ A compiled version of inliner must be available either in the system PATH variab
 //go:generate inline -out asserts_inlined.go -in asserts.go
 //go:generate gofmt -w=true asserts_inlined.go
 ```
-#Run tests:
+####Run tests:
 Source files intended for inlining should be prevented from being compiled by Go build by placing this directive before the package declaration:
 ```
 // +build generate
 ```
 
-#About inliner:
+####About inliner:
 
 Inliner uses the Go language “ast” (abstract syntax tree) package to parse source code. It will perform multiple passes over the source code until all inlineable declarations are resolved, including nested inlineable func declarations, code blocks within an inlineable function's scope, and nested static integer loops. It does not check type compatibility between inlineable function arguments and their call statements. Any such errors will be caught during the Go build phase.
 
