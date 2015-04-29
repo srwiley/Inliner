@@ -1,7 +1,7 @@
 # Inliner
 
 Inliner is a Go language pre-processor intended to be used with Go tool's 'generate' facility to inline simple functions, loops with integer counters and static literal bounds, and assertions. Benchmarks comparing inlined vs non-inlined functions can show speed increases ranging from a few fold, to up to ten fold or more. Here is the output of benchmarks from testfiles/inlined_test.go of this repository.
-
+```
 Benchmark1_2xLocalNotInlined	 3000000	       411 ns/op
 Benchmark1_2xLocalInlined		30000000	        48.2 ns/op
 
@@ -14,7 +14,7 @@ Benchmark3_1xLoopUnwound	30000000	        48.6 ns/op
 
 Benchmark4_2xLoopNotUnwound	20000000	        79.7 ns/op
 Benchmark4_2xLoopUnwound	200000000	         9.57 ns/op
-
+```
 
 #Inlining a function:
 
