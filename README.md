@@ -80,7 +80,7 @@ If the first argument is not a boolean and is nil, ,"affirm_" will execute the f
 
 Example:
 
-Source:
+`Source:
 func Foo() {
 	number := "3141"
 	n, err := strconv.Atoi(number)
@@ -100,7 +100,7 @@ func Foo() {
 	if (n == 3141) == false {
 		return
 	} /* */
-}
+}`
 
 More complex examples, tests, and benchmarks can be found in the testfiles folder. Assuming you have Go version 1.4 or later installed, you can run the examples as follows: Download the repository. Build inliner.go. Move to the testfiles directory and type:
 
