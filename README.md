@@ -23,21 +23,21 @@ Inliner can inline both local and global functions. Inlineable functions must no
 Example:
 
 Source:
-
-func Foo() \{
+```
+func Foo() {
 	sum := 0.0
-	bar_ := func(x float64) \{
+	bar_ := func(x float64) {
 		sum *= x
-	\}
+	}
 	
 	bar_(1.0)
 	bar_(2.0)
 	bar_(3.0)
 	fmt.Println("sum:", sum)
-\}
-
+}
+```
 Inlined:
-
+```
 func Foo() {
 	sum := 0.0
 	 /* bar_ := func(x float64) {
@@ -49,7 +49,7 @@ func Foo() {
 	sum *= (3.0) // inlined bar_(3.0)
 	fmt.Println("sum:", sum)
 }"
-
+```
 Unwinding a static loop:
 
 For a loop to be unwound, it must declare an integer variable at the start of the for statement using the “:=” token with a static integer literal on the right side. The variable name must match the filter regular expression. The condition statement must be a simple "<" or "<=" token with the integer variable on the left side and a static integer literal on the right. The for statement must increment the integer variable with a "++" token.
@@ -57,20 +57,22 @@ For a loop to be unwound, it must declare an integer variable at the start of th
 Example:
 
 Source:
+```
 func Foo() {
 	for i_ := 0; i_ < 3; i_++ {
 		fmt.Println("i:", i_)
 	}
 }
-
+```
 Inlined:
+```
 func Foo() {
 	 /* for i_ := 0; i_ < 3; i_++ { /* unwound */ 
 		fmt.Println("i:", (0))
 		fmt.Println("i:", (1))
 		fmt.Println("i:", (2)) /* } */ 
 }
-
+```
  Asserts:
 
 The assertion feature works by defining two new keywords, "affirm_" and "deny_". These words take one or two arguments. The second argument, if present, must be a string, which defines the failure action. If the second argument is not present, the default failure action is “return”. Unlike the function inlining and loop unwinding feature, which will run and produce the same results whether inlined or not, asserts will not compile unless inliner processes the source file.
@@ -82,15 +84,17 @@ If the first argument is not a boolean and is nil, ,"affirm_" will execute the f
 
 Example:
 
-`Source:
+Source:
+```
 func Foo() {
 	number := "3141"
 	n, err := strconv.Atoi(number)
 	deny_(err)
 	affirm_(n == 3141)
 }
-
+```
 Inlined:
+```
 func Foo() {
 	number := "3141"
 	n, err := strconv.Atoi(number)
@@ -102,7 +106,8 @@ func Foo() {
 	if (n == 3141) == false {
 		return
 	} /* */
-}`
+}
+```
 
 More complex examples, tests, and benchmarks can be found in the testfiles folder. Assuming you have Go version 1.4 or later installed, you can run the examples as follows: Download the repository. Build inliner.go. Move to the testfiles directory and type:
 
@@ -113,15 +118,15 @@ Generate directives:
 Inliner is intended to work with the Go tool's generate feature introduced in Go version 1.4. In the generate directive, you must provide an input file, an output file, and, optionally, a regular expression to filter function names and loop counter variables. The default filter matches names ending with an underscore. 
 
 A compiled version of inliner must be available either in the system PATH variable or directly referenced by the generate directive. For example, testfile/main.go expects an inliner executable in it's parent folder.
-
+```
 //go:generate -command inline ../inliner
 //go:generate inline -out asserts_inlined.go -in asserts.go
 //go:generate gofmt -w=true asserts_inlined.go
-
+```
 Source files intended for inlining should be prevented from being compiled by Go build by placing this directive before the package declaration:
-
+```
 // +build generate
-
+```
 About inliner :
 
 Inliner uses the go language “ast” (abstract syntax tree) package to parse source code. It will perform multiple passes over the source code until all inlineable declarations are resolved, including nested inlineable func declarations, code blocks within an inlineable function's scope, and nested static integer loops. It does not check type compatibility between inlineable function arguments and their call statements. Any such errors will be caught during the Go build phase.
