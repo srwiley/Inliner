@@ -1,3 +1,5 @@
+## Update 5/2022: Since the release of go version 1.8 the go complier has much better capabilities to inline simple functions. Therefore I will leave this repository up to demonstrate an early attempt at golang inlining using the AST tree, while leaving it available for extreme cases as a last best hope.
+
 # Inliner
 
 Inliner is a Go language pre-processor intended to be used with Go tool's 'generate' facility to inline simple functions, loops with integer counters and static literal bounds, and assertions. Benchmarks comparing inlined vs non-inlined functions can show speed increases ranging from a few fold, to up to ten fold or more. Here is the output of benchmarks from testfiles/inlined_test.go of this repository.
